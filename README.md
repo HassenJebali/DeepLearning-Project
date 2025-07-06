@@ -248,4 +248,118 @@ Afin de mieux comprendre la structure du modèle CNN construit avec PyTorch, il 
 ```python
 !pip install torchviz
 
+---
+
+## 📂 Tâche 3 : Classification multi-classes
+
+### 📌 Description
+Utilisation du dataset **Fashion-MNIST** pour entraîner un modèle de classification d’images avec un **CNN construit avec TensorFlow/Keras**. L’objectif est de reconnaître automatiquement des objets ou chiffres manuscrits à partir d’images.
+
+---
+
+## 🎯 Objectif
+Concevoir un **réseau convolutif robuste avec régularisation et data augmentation** capable de distinguer plusieurs classes (0 à 9), en utilisant **Keras** (backend TensorFlow).
+
+---
+
+## 🛠️ Outils & Technologies
+
+- Python 3.x
+- TensorFlow / Keras
+- Matplotlib / Seaborn
+- Scikit-learn
+
+---
+
+## 📊 Dataset
+
+- **Fashion MNIST** (vêtements)
+  - 60 000 images d'entraînement, 10 000 de test
+  - Images 28x28, en niveaux de gris
+  - 10 classes
+  - Accessible via `tensorflow.keras.datasets`
+
+---
+
+## ⚙️ Étapes du projet
+
+### 1. Prétraitement des données
+- Chargement via `keras.datasets.fashion_mnist`
+- Normalisation des pixels `[0, 255] → [0, 1]`
+- Reshape des images au format (28, 28, 1)
+- Encodage one-hot des labels (`to_categorical`)
+
+### 2. Construction du modèle CNN
+- `Conv2D(32)` + ReLU + MaxPooling + Dropout
+- `Conv2D(64)` + ReLU + MaxPooling + Dropout
+- `Flatten` → `Dense(128)` + ReLU + Dropout
+- `Dense(10)` avec activation `softmax` (sortie)
+
+### 3. Compilation du modèle
+- Optimiseur : `Adam`
+- Fonction de perte : `categorical_crossentropy`
+- Métrique : `accuracy`
+
+### 4. Entraînement du modèle
+Deux variantes sont testées :
+- **Sans Data Augmentation**
+- **Avec Data Augmentation** (`ImageDataGenerator` : rotation, shift, zoom...)
+
+### 5. Évaluation
+- `evaluate()` sur le jeu de test
+- Matrice de confusion
+- Rapport de classification (`precision`, `recall`, `f1-score`)
+- Courbes de précision par epoch
+
+---
+
+## 📈 Résultats comparés
+
+| Variante               | Accuracy (test) | F1-score moyen | Classe 6 (F1) |
+|------------------------|----------------|----------------|---------------|
+| ❌ Sans augmentation   | 89 %           | 0.89           | 0.69          |
+| ✅ Avec augmentation   | 89 %           | 0.89           | 0.69          |
+
+➡️ **Observation** : Les résultats sont très proches, mais l’usage de la data augmentation permet une meilleure **généralisation**, en particulier pour les classes sous-représentées ou confondues (comme la classe 6).
+
+---
+
+## 📊 Rapport de classification (extraits)
+
+**Sans Data Augmentation** :
+accuracy: 0.89
+macro avg F1: 0.89
+classe 6 F1: 0.69
+
+**Avec Data Augmentation** :
+accuracy: 0.89
+macro avg F1: 0.89
+classe 6 F1: 0.69
+
+## 🎁 Data Augmentation
+
+Ajout de transformations artificielles via `ImageDataGenerator` pour augmenter la robustesse du modèle :
+
+```python
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+datagen = ImageDataGenerator(
+    rotation_range=10,
+    zoom_range=0.1,
+    width_shift_range=0.1,
+    height_shift_range=0.1
+)
+
+datagen.fit(x_train)
+
+---
+
+## Fonctions utilisées
+`ReLU` : activation non linéaire après chaque convolution
+
+`Softmax` : activation de sortie pour la classification multi-classes
+
+`Dropout` : couche de régularisation pour éviter le surapprentissage
+
+`Data Augmentation` : technique pour améliorer la généralisation du modèle en simulant des variations réalistes d’images
 
