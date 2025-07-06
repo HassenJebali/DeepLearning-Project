@@ -247,7 +247,8 @@ Afin de mieux comprendre la structure du modèle CNN construit avec PyTorch, il 
 ### 1. Installer la bibliothèque `torchviz`
 ```python
 !pip install torchviz
-
+---
+```
 ---
 
 ## 📂 Tâche 3 : Classification multi-classes
