@@ -1,5 +1,5 @@
 # Deep Learnig Projects
-# 🧠 AI Deep Learning Practice Suite - Tâche 1 : Régression avec Keras
+# 🧠 AI Deep Learning Practice - Tâche 1 : Régression avec Keras
 
 ## 🎯 Objectif
 Cette tâche vise à construire un modèle de régression utilisant un **MLP (Multilayer Perceptron)** avec **Keras (TensorFlow backend)** afin de prédire une variable continue, comme le prix des maisons.
@@ -92,5 +92,160 @@ Utilisation du dataset **California Housing** pour entraîner un réseau de neur
 ---
 
 ✅ **But commun de ces métriques** : Évaluer la capacité du modèle à **faire des prédictions proches des valeurs réelles**. Plus les scores sont bas, meilleur est le modèle.
+
+---
+---
+
+## 📂 Tâche 2 : Classification supervisée
+
+### 📌 Description
+Utilisation du dataset **MNIST** pour entraîner un modèle de classification d’images à base de convolution. L’objectif est de reconnaître automatiquement les chiffres manuscrits à partir d’images en niveaux de gris (28x28 pixels).
+
+---
+
+## 🎯 Objectif
+Cette tâche consiste à construire un **réseau de neurones convolutif (CNN)** avec **PyTorch** afin de classer des images de chiffres manuscrits du dataset **MNIST** en 10 classes (de 0 à 9).
+
+---
+
+## 🛠️ Outils & Technologies
+
+- Python 3.x
+- PyTorch
+- Torchvision
+- Matplotlib
+- Scikit-learn
+
+---
+
+## 📊 Dataset
+
+- **MNIST** : Dataset intégré à `torchvision.datasets.MNIST`
+  - 60 000 images d’entraînement
+  - 10 000 images de test
+  - 10 classes (chiffres de 0 à 9)
+  - Taille : 28x28 pixels, monochrome
+
+---
+
+## ⚙️ Étapes du projet
+
+### 1. Chargement des données
+- Import du dataset via `torchvision`
+- Normalisation des images
+
+### 2. Prétraitement
+- Création des `DataLoader` pour l’entraînement et le test
+- Batch size = 64 pour le train, 1000 pour le test
+
+### 3. Modélisation avec PyTorch
+
+Dans cette étape, on construit un **réseau de neurones convolutifs (CNN)** à l’aide de la bibliothèque `torch.nn`. Ce type d’architecture est particulièrement efficace pour les données image, car il capture les **caractéristiques spatiales** (bords, textures, formes...) à travers des couches de convolution.
+
+#### 🧱 Architecture du modèle
+
+Le modèle utilisé pour MNIST se compose de :
+
+- **Couche 1 : Convolution 2D**
+  - `nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, padding=1)`
+  - Reçoit une image 28×28 en niveaux de gris (1 canal)
+  - Produit 16 cartes de caractéristiques (feature maps) de même taille grâce au padding
+  - **Activation : ReLU**
+  - **Réduction spatiale : MaxPooling (2x2)** → taille devient 14×14
+
+- **Couche 2 : Convolution 2D**
+  - `nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, padding=1)`
+  - Prend en entrée les 16 feature maps de la couche précédente
+  - Produit 32 cartes → taille encore 14×14 → MaxPooling réduit à 7×7
+  - **Activation : ReLU**
+  - **MaxPooling (2x2)**
+
+- **Flatten**
+  - Aplatissement de la sortie des convolutions : `32 * 7 * 7 = 1568` neurones
+
+- **Couche Fully Connected (dense)**
+  - `nn.Linear(in_features=1568, out_features=128)`
+  - **Activation : ReLU**
+
+- **Sortie (Classification)**
+  - `nn.Linear(in_features=128, out_features=10)`
+  - Donne un vecteur de 10 scores (logits), un pour chaque chiffre (0 à 9)
+
+#### 🧠 Fonctions clés
+
+- **Activation : ReLU (Rectified Linear Unit)**
+  - Permet au réseau d’apprendre des relations non linéaires
+  - Aide à éviter le problème du "vanishing gradient"
+
+- **Fonction de perte : `nn.CrossEntropyLoss`**
+  - Combine `LogSoftmax` + `Negative Log Likelihood`
+  - Adaptée à la **classification multi-classes**
+  - Calcule la différence entre les vraies classes et les probabilités prédites
+
+- **Optimiseur : `torch.optim.Adam`**
+  - Méthode d’optimisation adaptative
+  - Ajuste dynamiquement le learning rate de chaque paramètre
+  - Efficace, stable, et largement utilisé pour l'entraînement de modèles profonds
+
+#### 🧮 Dimensions résumées à chaque étape (entrée = 28×28)
+| Étape | Taille sortie | Canaux |
+|------|---------------|--------|
+| Conv1 + Pooling | 14×14     | 16     |
+| Conv2 + Pooling | 7×7       | 32     |
+| Flatten         | 1568      | —      |
+| FC1             | 128       | —      |
+| FC2 (Sortie)    | 10        | —      |
+
+---
+
+📌 Remarque : Le modèle reste volontairement **simple et léger**, adapté à un petit dataset comme MNIST pour un entraînement rapide tout en illustrant les bases de la **convolution**, **pooling**, **flatten**, et **dense layers**.
+
+
+### 4. Entraînement
+- Boucle d’entraînement sur plusieurs epochs
+- Affichage de la perte par epoch
+
+### 5. Évaluation
+- Prédictions sur le jeu de test
+- Calcul de l’accuracy globale
+- Génération de la matrice de confusion
+
+---
+
+
+## 📊 Métriques utilisées
+
+### 🔹 Accuracy
+- **Définition** : Proportion de prédictions correctes sur l’ensemble des échantillons.
+- **Objectif** : Évaluer la précision globale du modèle de classification.
+- **Utilité** : Très adaptée aux datasets équilibrés comme MNIST.
+
+### 🔹 Matrice de confusion
+- **Définition** : Tableau croisé indiquant les bonnes et mauvaises prédictions pour chaque classe.
+- **Objectif** : Identifier quelles classes sont confondues entre elles.
+- **Utilité** : Utile pour analyser les erreurs spécifiques (ex. : 4 prédits comme 9).
+
+---
+
+✅ **But commun de ces métriques** : Évaluer la capacité du modèle à **reconnaître correctement les images** et à **réduire les confusions entre classes**. Une haute accuracy et une matrice de confusion bien diagonale indiquent un bon modèle.
+
+---
+
+## ℹ️ Fonction d’activation utilisée : ReLU
+
+- **Définition** : `ReLU(x) = max(0, x)`
+- **Objectif** : Ajouter de la non-linéarité au réseau pour lui permettre d’apprendre des fonctions complexes.
+- **Avantage** : Simple, rapide, et efficace pour les réseaux profonds. Elle évite le problème du gradient qui disparaît.
+
+---
+## 🧩 Visualisation du modèle avec `torchviz`
+
+Afin de mieux comprendre la structure du modèle CNN construit avec PyTorch, il est possible de **générer un graphe visuel** du flux computationnel (calcul des sorties à partir des entrées). Cela aide à observer les **connexions entre les couches** et la façon dont les données traversent le réseau.
+
+### ✅ Étapes pour afficher le graphe dans Google Colab
+
+### 1. Installer la bibliothèque `torchviz`
+```python
+!pip install torchviz
 
 
