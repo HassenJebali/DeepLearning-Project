@@ -352,15 +352,16 @@ datagen = ImageDataGenerator(
 )
 
 datagen.fit(x_train)
+```
 
 ---
 
 ## Fonctions utilisées
-`ReLU` : activation non linéaire après chaque convolution
+**ReLU** : activation non linéaire après chaque convolution
 
-`Softmax` : activation de sortie pour la classification multi-classes
+**Softmax** : activation de sortie pour la classification multi-classes
 
-`Dropout` : couche de régularisation pour éviter le surapprentissage
+**Dropout** : couche de régularisation pour éviter le surapprentissage
 
-`Data Augmentation` : technique pour améliorer la généralisation du modèle en simulant des variations réalistes d’images
+**Data Augmentation** : technique pour améliorer la généralisation du modèle en simulant des variations réalistes d’images
 
