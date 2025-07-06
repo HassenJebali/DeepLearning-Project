@@ -9,7 +9,7 @@ Cette tâche vise à construire un modèle de régression utilisant un **MLP (Mu
 ## 📂 Tâche 1 : Régression supervisée
 
 ### 📌 Description
-Utilisation du dataset **California Housing** ou **Boston Housing** pour entraîner un réseau de neurones simple à estimer une valeur continue à partir de données tabulaires.
+Utilisation du dataset **California Housing** pour entraîner un réseau de neurones simple à estimer une valeur continue à partir de données tabulaires.
 
 ---
 
@@ -25,7 +25,6 @@ Utilisation du dataset **California Housing** ou **Boston Housing** pour entraî
 ## 📊 Dataset
 
 - **California Housing** : Dataset accessible via `sklearn.datasets.fetch_california_housing()`
-- Alternative : `tensorflow.keras.datasets.boston_housing` (déprécié dans scikit-learn)
 
 ---
 
@@ -58,6 +57,28 @@ Utilisation du dataset **California Housing** ou **Boston Housing** pour entraî
   - RMSE (Root Mean Squared Error)
   - MAE (Mean Absolute Error)
 - Visualisation de la courbe d'apprentissage
+
+## 📊 Métriques utilisées
+
+### 🔹 MSE (Mean Squared Error)
+- **Définition** : Moyenne des carrés des écarts entre les prédictions du modèle et les vraies valeurs.
+- **Objectif** : Pénaliser fortement les erreurs importantes (car l’erreur est élevée au carré).
+- **Utilité** : Utile pour détecter les modèles qui ont tendance à faire de grosses erreurs sur certains échantillons.
+
+### 🔹 RMSE (Root Mean Squared Error)
+- **Définition** : Racine carrée du MSE.
+- **Objectif** : Fournir une mesure d’erreur dans la même unité que la variable prédite (par exemple, en milliers de dollars pour le prix des maisons).
+- **Utilité** : Interprétable directement sur l’échelle de la cible. Plus facile à comparer à une valeur réelle moyenne.
+
+### 🔹 MAE (Mean Absolute Error)
+- **Définition** : Moyenne des valeurs absolues des écarts entre les prédictions et les vraies valeurs.
+- **Objectif** : Mesurer l’erreur moyenne sans donner trop d’importance aux erreurs extrêmes.
+- **Utilité** : Plus robuste que le MSE en présence d’outliers (valeurs aberrantes).
+
+---
+
+✅ **But commun de ces métriques** : Évaluer la capacité du modèle à **faire des prédictions proches des valeurs réelles**. Plus les scores sont bas, meilleur est le modèle.
+
 
 ---
 
